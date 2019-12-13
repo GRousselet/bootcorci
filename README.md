@@ -429,6 +429,15 @@ R.R. (2019) A practical introduction to the bootstrap: a versatile
 method to make inferences by using data-driven simulations (Preprint).
 PsyArXiv.
 
+[Wilcox](https://dornsife.usc.edu/assets/sites/239/docs/pcorcom.pdf),
+R.R. (2009) Comparing Pearson Correlations: Dealing with
+Heteroscedasticity and Nonnormality. Communications in Statistics -
+Simulation and Computation, 38, 2220–2234.
+
+[Wilcox](https://www.ncbi.nlm.nih.gov/pubmed/27114391), R.R. (2016)
+Comparing dependent robust correlations. Br J Math Stat Psychol, 69,
+215–224.
+
 [Wilcox](https://dornsife.usc.edu/labs/rwilcox/books/), R.R. (2017)
 Introduction to Robust Estimation and Hypothesis Testing, 4th edition.
 edn. Academic Press.
