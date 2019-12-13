@@ -12,6 +12,7 @@ corci(
   alpha = 0.05,
   alternative = "two.sided",
   null.value = 0,
+  saveboot = TRUE,
   ...
 )
 }
@@ -33,13 +34,17 @@ correlations, or "less" for negative correlations.}
 
 \item{null.value}{Hypothesis to test. Default 0.}
 
+\item{saveboot}{Option to save bootstrap samples. Default TRUE.}
+
 \item{...}{Optional parameter to pass to correlation function.}
 }
 \value{
 \itemize{
 \item \code{estimate} the correlation coefficient.
 \item \code{p.value} the p-value of the test.
-\item \code{statistic} the t statistic of the test. }
+\item \code{statistic} the t statistic of the test.
+\item \code{bootsamples} the bootstrap samples.
+}
 }
 \description{
 The default correlation is the percentage bend correlation.
@@ -53,3 +58,9 @@ from Rallfun-v37.txt - see \url{https://github.com/nicebread/WRS/} and
 \url{http://dornsife.usc.edu/labs/rwilcox/software/}.
 }
 
+\references{
+Wilcox, R.R. (2009) Comparing Pearson Correlations: Dealing with Heteroscedasticity and Nonnormality.
+Communications in Statistics - Simulation and Computation, 38, 2220–2234.
+
+Wilcox, R.R. (2017) Introduction to Robust Estimation and Hypothesis Testing, 4th edition. Academic Press.
+}

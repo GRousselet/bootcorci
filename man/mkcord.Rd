@@ -2,10 +2,18 @@
 % Please edit documentation in R/utils.R
 \name{mkcord}
 \alias{mkcord}
-\title{Make bivariate normal correlated data}
+\title{Make standard normal correlated data from 2 groups/conditions}
 \usage{
-mkcord(rho = 0, mu = c(0, 0), n = 100)
+mkcord(rho = 0, n = 50)
+}
+\arguments{
+\item{rho}{the population correlation the sample is drawn from (default 0).}
+
+\item{n}{the sample size.}
+}
+\value{
+A list with elements x and y.
 }
 \description{
-Make bivariate normal correlated data
+Make standard normal correlated data from 2 groups/conditions
 }

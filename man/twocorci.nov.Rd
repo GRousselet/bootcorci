@@ -14,6 +14,7 @@ twocorci.nov(
   alpha = 0.05,
   alternative = "two.sided",
   null.value = 0,
+  saveboot = TRUE,
   ...
 )
 }
@@ -34,6 +35,8 @@ positive correlations, or "less" for negative correlations.}
 
 \item{null.value}{Hypothesis to test. Default 0.}
 
+\item{saveboot}{Option to save bootstrap samples. Default TRUE.}
+
 \item{...}{Optional parameter to pass to correlation function.}
 }
 \value{
@@ -43,6 +46,7 @@ positive correlations, or "less" for negative correlations.}
 \item \code{difference} the difference between correlation coefficients.
 \item \code{conf.int} the bootstrap confidence interval.
 \item \code{p.value} the bootstrap p value.
+\item \code{bootsamples} the bootstrap samples.
 }
 }
 \description{
@@ -60,5 +64,8 @@ from Rallfun-v37.txt - see \url{https://github.com/nicebread/WRS/} and
 }
 
 \references{
+Wilcox, R.R. (2016) Comparing dependent robust correlations.
+Br J Math Stat Psychol, 69, 215–224.
 
+Wilcox, R.R. (2017) Introduction to Robust Estimation and Hypothesis Testing, 4th edition. Academic Press.
 }

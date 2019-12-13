@@ -61,12 +61,52 @@ adj.corbootci <- function(n, nboot){
   round(c(ilow, ihi)*nboot/599)
 }
 
-#' Make bivariate normal correlated data
+#' Make standard normal correlated data from 2 groups/conditions
+#' @param rho the population correlation the sample is drawn from (default 0).
+#' @param n the sample size.
+#' @return A list with elements x and y.
 #' @export
-mkcord <- function(rho = 0, mu = c(0,0), n = 100){
+mkcord <- function(rho=0, n=50){
+  mu <- c(0,0)
   cmat <- matrix(c(1, rho, rho, 1), 2, 2)
   out <- MASS::mvrnorm(n = n, mu = mu, Sigma = cmat)
-  out
+  list(x = out[,1], y = out[,2])
+}
+
+#' Make standard normal correlated data from 3 groups/conditions
+#' @param rho.x1y the population correlation between x1 and y (default 0).
+#' @param rho.x2y the population correlation between x2 and y (default 0.5).
+#' @param rho.x1x2 the population correlation between x1 and x2 (default 0.2).
+#' @param n the sample size.
+#' @return A list with elements x1, x2 and y.
+#' @export
+mkcord3 <- function(rho.x1y=0, rho.x2y=0.5, rho.x1x2=0.2, n=50){
+  mu <- c(0,0,0)
+  cmat <- matrix(c(1, rho.x1x2, rho.x1y,
+                   rho.x1x2, 1, rho.x2y,
+                   rho.x1y, rho.x2y, 1), 3, 3)
+  out <- MASS::mvrnorm(n = n, mu = mu, Sigma = cmat)
+  list(x1 = out[,1], x2 = out[,2], y = out[,3])
+}
+
+#' Make standard normal correlated data from 4 groups/conditions
+#' @param rho.x1y1 the population correlation between x1 and y1 (default 0).
+#' @param rho.x2y2 the population correlation between x2 and y2 (default 0.5).
+#' @param rho.x1x2,rho.y1y2,rho.x1y2,rho.x2y1 the other population correlations.
+#' @param n the sample size.
+#' @return A list with elements x1, y1, x2 and y2.
+#' @export
+mkcord4 <- function(rho.x1y1=0, rho.x2y2=0.5,
+                    rho.x1x2=0.2, rho.y1y2=0.2,
+                    rho.x1y2=0, rho.x2y1=0,
+                    n=50){
+  mu <- c(0,0,0,0)
+  cmat <- matrix(c(1, rho.x1y1, rho.x1x2, rho.x1y2,
+                   rho.x1y1, 1, rho.x2y2, rho.y1y2,
+                   rho.x1x2, rho.x2y1, 1, rho.x2y2,
+                   rho.x1y2, rho.y1y2, rho.x2y2, 1), 4, 4)
+  out <- MASS::mvrnorm(n = n, mu = mu, Sigma = cmat)
+  list(x1 = out[,1], y1 = out[,2], x2 = out[,3], y2 = out[,4])
 }
 
 #' Store the data in a matrix or data frame in

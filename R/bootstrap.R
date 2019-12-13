@@ -16,6 +16,7 @@
 #' @param alternative Type of test, either "two.sided", "greater" for positive
 #'   correlations, or "less" for negative correlations.
 #' @param null.value Hypothesis to test. Default 0.
+#' @param saveboot Option to save bootstrap samples. Default TRUE.
 #' @param ... Optional parameter to pass to correlation function.
 #'
 #' @return \itemize{
@@ -29,9 +30,15 @@
 #' from Rallfun-v37.txt - see \url{https://github.com/nicebread/WRS/} and
 #' \url{http://dornsife.usc.edu/labs/rwilcox/software/}.
 #'
+#' @references
+#' Wilcox, R.R. (2009) Comparing Pearson Correlations: Dealing with Heteroscedasticity and Nonnormality.
+#' Communications in Statistics - Simulation and Computation, 38, 2220–2234.
+#'
+#' Wilcox, R.R. (2017) Introduction to Robust Estimation and Hypothesis Testing, 4th edition. Academic Press.
+#'
 #' @export
 corci <- function(x, y, method="pbcor", nboot=2000, alpha=.05,
-                  alternative = "two.sided", null.value=0, ...){
+                  alternative = "two.sided", null.value=0, saveboot=TRUE,...){
   if(!is.vector(x) || !is.vector(y)){
     stop("corci: x and y must be vectors.")
   }
@@ -67,8 +74,11 @@ corci <- function(x, y, method="pbcor", nboot=2000, alpha=.05,
   if(alternative == "less"){
     sig <- 1 - sum(bvec <= null.value)/nboot
   }
-
-  list(conf.int=corci, p.value=sig, estimate=est, bootsamples=bvec)
+  if(saveboot){ # save bootstrap samples
+    list(conf.int=corci, p.value=sig, estimate=est, bootsamples=bvec)
+  } else {
+  list(conf.int=corci, p.value=sig, estimate=est)
+  }
 }
 
 # ::::::::::::::::::::::::::::
@@ -94,6 +104,7 @@ corci <- function(x, y, method="pbcor", nboot=2000, alpha=.05,
 #' @param alternative Type of test, either "two.sided" (default), "greater" for
 #' positive correlations, or "less" for negative correlations.
 #' @param null.value Hypothesis to test. Default 0.
+#' @param saveboot Option to save bootstrap samples. Default TRUE.
 #' @param ... Optional parameter to pass to correlation function.
 #'
 #' @return \itemize{
@@ -109,10 +120,16 @@ corci <- function(x, y, method="pbcor", nboot=2000, alpha=.05,
 #' from Rallfun-v37.txt - see \url{https://github.com/nicebread/WRS/} and
 #' \url{http://dornsife.usc.edu/labs/rwilcox/software/}.
 #'
+#' @references
+#' Wilcox, R.R. (2009) Comparing Pearson Correlations: Dealing with Heteroscedasticity and Nonnormality.
+#' Communications in Statistics - Simulation and Computation, 38, 2220–2234.
+#'
+#' Wilcox, R.R. (2017) Introduction to Robust Estimation and Hypothesis Testing, 4th edition. Academic Press.
+#'
 #' @export
 twocorci <- function(x1, y1, x2, y2,
                      method="pbcor", nboot=2000, alpha=.05,
-                     alternative = "two.sided", null.value=0, ...){
+                     alternative = "two.sided", null.value=0, saveboot=TRUE, ...){
   if(!is.vector(x1) || !is.vector(x2) || !is.vector(y1) || !is.vector(y2)){
     stop("twocorci: x1, x2, y1, y2  must be vectors.")
   }
@@ -163,8 +180,14 @@ twocorci <- function(x1, y1, x2, y2,
   if(alternative == "less"){
     sig <- 1 - sum(bvec <= null.value)/nboot
   }
-  list(estimate1=r1, estimate2=r2, difference=r1-r2,
-       conf.int=corci, p.value=sig, bootsamples=bvec)
+  if(saveboot){ # save bootstrap samples?
+    list(estimate1=r1, estimate2=r2, difference=r1-r2,
+         conf.int=corci, p.value=sig, bootsamples=bvec)
+  } else {
+    list(estimate1=r1, estimate2=r2, difference=r1-r2,
+         conf.int=corci, p.value=sig)
+  }
+
 }
 
 # :::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -188,6 +211,7 @@ twocorci <- function(x1, y1, x2, y2,
 #' @param alternative Type of test, either "two.sided" (default), "greater" for
 #' positive correlations, or "less" for negative correlations.
 #' @param null.value Hypothesis to test. Default 0.
+#' @param saveboot Option to save bootstrap samples. Default TRUE.
 #' @param ... Optional parameter to pass to correlation function.
 #'
 #' @return \itemize{
@@ -204,10 +228,15 @@ twocorci <- function(x1, y1, x2, y2,
 #' \url{http://dornsife.usc.edu/labs/rwilcox/software/}.
 #'
 #' @references
+#' Wilcox, R.R. (2016) Comparing dependent robust correlations.
+#' Br J Math Stat Psychol, 69, 215–224.
+#'
+#' Wilcox, R.R. (2017) Introduction to Robust Estimation and Hypothesis Testing, 4th edition. Academic Press.
+#'
 #' @export
 twocorci.ov<-function(x1, x2, y,
                       method="pbcor", nboot=2000, alpha=.05,
-                      alternative = "two.sided", null.value=0, ...){
+                      alternative = "two.sided", null.value=0, saveboot=TRUE, ...){
     if(!is.vector(x1) || !is.vector(x2) || !is.vector(y)){
       stop("twocorci.ov: x1, x2, y  must be vectors.")
     }
@@ -245,8 +274,13 @@ twocorci.ov<-function(x1, x2, y,
     if(alternative == "less"){
       sig <- 1 - sum(bvec <= null.value)/nboot
     }
-  list(estimate.x1y=r.x1y, estimate.x2y=r.x2y, difference=r.x1y-r.x2y,
-       conf.int=corci, p.value=sig, bootsamples=bvec)
+    if(saveboot){ # save bootstrap samples?
+      list(estimate.x1y=r.x1y, estimate.x2y=r.x2y, difference=r.x1y-r.x2y,
+           conf.int=corci, p.value=sig, bootsamples=bvec)
+    } else {
+      list(estimate.x1y=r.x1y, estimate.x2y=r.x2y, difference=r.x1y-r.x2y,
+           conf.int=corci, p.value=sig)
+    }
 }
 
 # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -270,6 +304,7 @@ twocorci.ov<-function(x1, x2, y,
 #' @param alternative Type of test, either "two.sided" (default), "greater" for
 #' positive correlations, or "less" for negative correlations.
 #' @param null.value Hypothesis to test. Default 0.
+#' @param saveboot Option to save bootstrap samples. Default TRUE.
 #' @param ... Optional parameter to pass to correlation function.
 #'
 #' @return \itemize{
@@ -286,10 +321,15 @@ twocorci.ov<-function(x1, x2, y,
 #' \url{http://dornsife.usc.edu/labs/rwilcox/software/}.
 #'
 #' @references
+#' Wilcox, R.R. (2016) Comparing dependent robust correlations.
+#' Br J Math Stat Psychol, 69, 215–224.
+#'
+#' Wilcox, R.R. (2017) Introduction to Robust Estimation and Hypothesis Testing, 4th edition. Academic Press.
+#'
 #' @export
 twocorci.nov <-function(x1, y1, x2, y2,
                         method="pbcor", nboot=2000, alpha=.05,
-                        alternative = "two.sided", null.value=0, ...){
+                        alternative = "two.sided", null.value=0, saveboot=TRUE, ...){
   if(!is.vector(x1) || !is.vector(x2) || !is.vector(y1) || !is.vector(y2)){
     stop("twocorci.nov: x1, x2, y1, y2  must be vectors.")
   }
@@ -328,6 +368,11 @@ twocorci.nov <-function(x1, y1, x2, y2,
   if(alternative == "less"){
     sig <- 1 - sum(bvec <= null.value)/nboot
   }
-  list(estimate.x1y1=r.x1y1, estimate.x2y2=r.x2y2, difference=r.x1y1-r.x2y2,
-       conf.int=corci, p.value=sig, bootsamples=bvec)
+  if(saveboot){ # save bootstrap samples?
+    list(estimate.x1y1=r.x1y1, estimate.x2y2=r.x2y2, difference=r.x1y1-r.x2y2,
+         conf.int=corci, p.value=sig, bootsamples=bvec)
+  } else {
+    list(estimate.x1y1=r.x1y1, estimate.x2y2=r.x2y2, difference=r.x1y1-r.x2y2,
+         conf.int=corci, p.value=sig)
+  }
 }
