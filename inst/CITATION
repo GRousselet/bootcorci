@@ -1,0 +1,18 @@
+citHeader("For a general citation to bootcorci in publications use:")
+
+citEntry(entry = "Article",
+  title        = "A practical introduction to the bootstrap: a versatile method to make inferences by using data-driven simulations",
+  author       = personList(as.person("Guillaume A. Rousselet"),
+                   as.person("Cyril R. Pernet"), as.person("Rand R. Wilcox")),
+  journal      = "PsyArXiv",
+  year         = "2019",
+  url          = "https://psyarxiv.com/h8ft7/",
+
+  textVersion  =
+  paste("Rousselet, G.A., Pernet, C.R., & Wilcox, R.R. (2019).",
+        "A practical introduction to the bootstrap: a versatile method to make inferences by using data-driven simulations (Preprint).",
+        "PsyArXiv.",
+        "URL https://psyarxiv.com/h8ft7/.")
+)
+
+citFooter("For a citation specific to a particular bootstrap method, see the help file for the bootstrap fonction you used.")
