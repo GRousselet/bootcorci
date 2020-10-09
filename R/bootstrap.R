@@ -160,7 +160,8 @@ twocorci <- function(x1, y1, x2, y2,
   bvec2 <- apply(data2, 1, corbsub, x2, y2, corfun, ...) # A 1 by nboot matrix.
   bvec <- bvec1 - bvec2
   bsort <- sort(bvec)
-  if(method == "pearson"){ # Get quantile indices
+  if(method == "pearson"){ # Adjust quantile indices
+    n <- n1 + n2
     out <- adj.corbootci(n, nboot)
     ilow <- out[1]
     ihi <- out[2]
