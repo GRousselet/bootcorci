@@ -1,6 +1,23 @@
 # Simplified versions of the correlation functions to use with the bootstrap functions.
 # Only the correlation coefficients are returned and no checks are done.
 
+#' Compute Kendall's tau
+#'
+#' Simplified version of \code{kendall.test} which returns only the correlation coefficient.
+#' Called by the bootstrap functions for faster execution.
+#'
+#' @param x,y Two vectors of the same length.
+#' @return The correlation coefficient.
+#' @export
+kendall <- function(x,y){
+  n <- length(x)
+  xdif <- outer(x,x,FUN="-")
+  ydif <- outer(y,y,FUN="-")
+  tv <- sign(xdif)*sign(ydif)
+  corv <- sum(tv)/(n*(n-1))
+  corv
+}
+
 #' Compute Spearman's rho
 #'
 #' Simplified version of \code{spearman.test} which returns only the correlation coefficient.
