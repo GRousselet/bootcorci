@@ -2,6 +2,7 @@
 
 export(corci)
 export(kendall)
+export(kendall.test)
 export(mkcord)
 export(mkcord3)
 export(mkcord4)

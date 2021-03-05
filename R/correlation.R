@@ -36,6 +36,58 @@ spearman.test <- function(x, y, alternative="two.sided"){
   list(estimate = corv, p.value = sig, statistic = test)
 }
 
+#' Compute Kendall's tau
+#'
+#' Missing values are automatically removed.
+#' Also compute 1-alpha confidence interval using
+#' the method recommended by Long and Cliff (1997).
+#'
+#' @param x,y Two vectors of the same length.
+#' @param alternative Type of test, either "two.sided", "greater" for positive
+#'   correlations, or "less" for negative correlations.
+#' @param alpha Used to compute 1-alpha confidence interval - default to 0.05.
+#' @return \itemize{
+#' \item \code{estimate} the correlation coefficient.
+#' \item \code{ci} the confidence interval for tau.
+#' \item \code{p.value} the p-value of the test.
+#' \item \code{statistic} test statistic used to compute the p value.}
+#' @export
+kendall.test <- function(x, y, alternative="two.sided", alpha = 0.05){
+  if(!is.vector(x) || !is.vector(y)){
+    stop("kendall: x and y must be vectors.")
+  }
+  if(length(x)!=length(y)){
+    stop("kendall: the vectors do not have equal lengths.")
+  }
+  m <- cbind(x,y)
+  m <- m[complete.cases(m), ]
+  n <- nrow(m)
+  x <- m[,1]
+  y <- m[,2]
+  xdif <- outer(x,x,FUN="-")
+  ydif <- outer(y,y,FUN="-")
+  tv <- sign(xdif)*sign(ydif)
+  dbar <- apply(tv,1,mean)
+  corv <- sum(tv)/(n*(n-1))
+  A <- sum((dbar-corv)^2)/(n-1)
+  B <- (n*(n-1)*(-1)*corv^2+sum(tv^2))/(n^2-n-1)
+  C <- (4*(n-2)*A+2*B)/(n*(n-1))
+  crit <- qnorm(alpha/2)
+  cilow <- corv+crit*sqrt(C)
+  cihi <- corv-crit*sqrt(C)
+  test <- corv/sqrt((2*(2*n+5))/(9*n*(n-1)))
+  if(alternative == "two.sided"){
+    sig <- 2 * (1 - pnorm(abs(test)))
+  }
+  if(alternative == "greater"){
+    sig <- 1 - pnorm(test)
+  }
+  if(alternative == "less"){
+    sig <- pnorm(test)
+  }
+  list(estimate = corv, ci = c(cilow,cihi), p.value = sig, statistic = test)
+}
+
 #' Compute Pearson's rho
 #'
 #' Missing values are automatically removed.

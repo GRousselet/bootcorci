@@ -1,6 +1,7 @@
 # bootcorci 0.0.1
 
-* add `tau` function
+* add `kendall` function
+* add `kendall.test` function
 
 # bootcorci 0.0.0.9000
 
